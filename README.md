@@ -30,7 +30,13 @@ Masaüstündəki **ilkmusic** ikonuna iki dəfə bas. Tətbiq brauzerdə açıl�
    "%USERPROFILE%\.venvs\mahni-app\Scripts\python.exe" packaging\build.py
    ```
 
-2. `dist\ilkmusic.zip` faylını (təxminən 130 MB) WhatsApp, Telegram və ya Google Drive ilə göndər.
+2. `dist\ilkmusic.zip` faylını GitHub-da yeni versiya kimi dərc et. Dostların onu yuxarıdakı linkdən yükləyir:
+
+   ```bat
+   "%LOCALAPPDATA%\Programs\gh\bin\gh.exe" release create v1.1 dist\ilkmusic.zip --title "ilkmusic v1.1" --notes "Nə dəyişdi"
+   ```
+
+   Və ya faylı (təxminən 130 MB) WhatsApp, Telegram, Google Drive ilə birbaşa göndər.
 3. Qarşı tərəf ZIP-i çıxarır, qovluğu daimi yerə qoyur (məsələn, Sənədlər) və `ilkmusic.exe`-ni açır. Heç nə quraşdırmaq lazım deyil. Təlimat ZIP-in içindədir: `OXU.txt`.
    - İlk açılışda `ilkmusic.exe` masaüstündə ikon yaratmağı təklif edir. Qovluq sonra köçürülsə, ikonu yeni yerə özü yönəldir.
    - `ilkmusic.exe` qovluqdan ayrı köçürülsə, nə etmək lazım olduğunu izah edən pəncərə çıxır.

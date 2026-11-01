@@ -113,3 +113,4 @@ Yoxdur.
   - Arxa fonda Zaqatala şəkli (Wikimedia Commons, CC BY 3.0), axtarışın iki tərəfində "Zaqatala".
   - Paket yenidən yığıldı.
 - 2026-10-25: "Zaqatala" yazısı iki tərəfdən götürüldü, axtarışın üstündə bir dənə böyük yazı oldu.
+- 2026-11-01: GitHub-a dərc edildi: public repo `ilkin055/ilkmusic` və Release v1.0 (`ilkmusic.zip`).
