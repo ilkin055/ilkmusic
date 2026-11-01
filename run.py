@@ -18,6 +18,9 @@ import winreg
 from pathlib import Path
 
 HOST = "127.0.0.1"
+# Telefon ev Wi-Fi-ı ilə qoşula bilsin deyə server bütün şəbəkə kartlarında dinləyir.
+# Şəbəkədən gələn sorğuları app/main.py gizli açarla yoxlayır.
+BIND_HOST = "0.0.0.0"
 PORTS = range(8000, 8011)
 LOG_PATH = Path(tempfile.gettempdir()) / "ilkmusic.log"
 APP_WINDOW_SIZE = "1280,860"
@@ -92,7 +95,7 @@ def run() -> None:
     import app.main as app_module
 
     url = f"http://localhost:{port}"
-    server = uvicorn.Server(uvicorn.Config(app_module.app, host=HOST, port=port))
+    server = uvicorn.Server(uvicorn.Config(app_module.app, host=BIND_HOST, port=port))
     app_module.shutdown_hook = lambda: setattr(server, "should_exit", True)
     threading.Timer(1.5, _open_app_window, args=[url]).start()
     server.run()

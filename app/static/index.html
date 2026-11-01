@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ilkmusic</title>
   <link rel="icon" href="/static/favicon.ico">
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="ilkmusic">
+  <meta name="theme-color" content="#0c0e13">
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -12,7 +15,22 @@
 
   <header class="topbar">
     <a href="#" id="home-link" class="logo">ilk<span>music</span></a>
+    <button type="button" id="phone-btn" hidden>📱 Telefonda aç</button>
   </header>
+
+  <dialog id="phone-dialog" aria-labelledby="phone-title">
+    <h2 id="phone-title">Telefonda aç</h2>
+    <div id="phone-qr" class="qr"></div>
+    <ol>
+      <li>Telefon kompüterlə <b>eyni Wi-Fi</b>-da olsun.</li>
+      <li>iPhone kamerası ilə QR kodu skan et və linki Safari-də aç.</li>
+      <li>Safari-də <b>Paylaş → "Ana ekrana əlavə et"</b>: ilkmusic ikonu telefonda görünəcək.</li>
+    </ol>
+    <p class="note">Kompüterdə ilkmusic açıq qalmalıdır. Yüklənən mahnılar iPhone-un "Fayllar" bölməsinə düşür. Səslə axtarış telefonda işləmir.</p>
+    <p class="note">Bu linki başqası ilə paylaşma: içində sənin gizli açarın var.</p>
+    <p id="phone-url" class="phone-url"></p>
+    <button type="button" id="phone-close" class="primary">Bağla</button>
+  </dialog>
 
   <main>
     <section class="hero">

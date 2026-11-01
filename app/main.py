@@ -7,7 +7,9 @@ import logging
 import math
 import os
 import re
+import secrets
 import shutil
+import socket
 import subprocess
 import tempfile
 import threading
@@ -31,9 +33,11 @@ if FFMPEG_DIR:
     os.environ["PATH"] = str(FFMPEG_DIR) + os.pathsep + os.environ.get("PATH", "")
 
 # pydub (shazamio-nun asılılığı) ffmpeg-i import zamanı axtarır, ona görə bu importlar PATH-dən sonra gəlir.
+import qrcode  # noqa: E402
+import qrcode.image.svg  # noqa: E402
 import yt_dlp  # noqa: E402
-from fastapi import FastAPI, HTTPException, UploadFile  # noqa: E402
-from fastapi.responses import FileResponse  # noqa: E402
+from fastapi import FastAPI, HTTPException, Request, UploadFile  # noqa: E402
+from fastapi.responses import FileResponse, PlainTextResponse  # noqa: E402
 from fastapi.staticfiles import StaticFiles  # noqa: E402
 from shazamio import Shazam  # noqa: E402
 
@@ -65,6 +69,19 @@ TITLE_NOISE_WORDS = {
 # Səhifə hər 20 saniyədən bir heartbeat göndərir. Bu müddətdə heç bir sorğu gəlməsə, səhifə bağlanıb deməkdir.
 IDLE_TIMEOUT_SECONDS = 180
 IDLE_CHECK_SECONDS = 30
+# Telefon kilidlənəndə Safari heartbeat göndərmir: telefondan istifadə olunubsa, server daha uzun gözləyir.
+PHONE_IDLE_TIMEOUT_SECONDS = 30 * 60
+
+# Telefondan (ev Wi-Fi-ı ilə) giriş: kompüterin özündən gələn sorğular sərbəstdir, şəbəkədən gələnlər
+# QR koddakı gizli açarı istəyir ki, eyni Wi-Fi-dakı başqası tətbiqdən istifadə edə bilməsin.
+LOCAL_HOSTS = {"127.0.0.1", "::1"}
+ACCESS_KEY_PATH = DATA_DIR / "access-key.txt"
+ACCESS_COOKIE = "ilkmusic_key"
+ACCESS_COOKIE_SECONDS = 365 * 24 * 3600
+NO_ACCESS_MESSAGE = (
+    "ilkmusic: icazə yoxdur.\n\n"
+    "Kompüterdəki ilkmusic-də \"Telefonda aç\" düyməsinə bas və QR kodu telefonun kamerası ilə skan et."
+)
 
 VIDEO_ID_RE = re.compile(r"^[A-Za-z0-9_-]{11}$")
 YOUTUBE_URL_RE = re.compile(
@@ -82,6 +99,22 @@ _recommendation_cache: dict[str, tuple[float, list[dict]]] = {}
 # run.py bunu təyin edir. uvicorn birbaşa işə salınanda (məs. inkişaf zamanı) None qalır və server özü dayanmır.
 shutdown_hook: Callable[[], None] | None = None
 _last_activity = time.monotonic()
+_last_phone_activity: float | None = None
+
+
+def _load_access_key() -> str:
+    try:
+        key = ACCESS_KEY_PATH.read_text(encoding="utf-8").strip()
+    except OSError:
+        key = ""
+    if not key:
+        key = secrets.token_urlsafe(16)
+        ACCESS_KEY_PATH.parent.mkdir(parents=True, exist_ok=True)
+        ACCESS_KEY_PATH.write_text(key, encoding="utf-8")
+    return key
+
+
+ACCESS_KEY = _load_access_key()
 
 
 def _mark_activity() -> None:
@@ -89,11 +122,18 @@ def _mark_activity() -> None:
     _last_activity = time.monotonic()
 
 
+def _mark_phone_activity() -> None:
+    global _last_phone_activity
+    _last_phone_activity = time.monotonic()
+
+
 async def _stop_when_idle() -> None:
     """Brauzerdə tətbiq səhifəsi qalmayanda serveri dayandırır."""
     while True:
         await asyncio.sleep(IDLE_CHECK_SECONDS)
-        if shutdown_hook and time.monotonic() - _last_activity > IDLE_TIMEOUT_SECONDS:
+        now = time.monotonic()
+        phone_recent = _last_phone_activity is not None and now - _last_phone_activity < PHONE_IDLE_TIMEOUT_SECONDS
+        if shutdown_hook and now - _last_activity > IDLE_TIMEOUT_SECONDS and not phone_recent:
             shutdown_hook()
             logger.info("Brauzerdə açıq səhifə qalmadı, tətbiq dayanır.")
             return
@@ -119,14 +159,39 @@ app = FastAPI(title="ilkmusic", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
+def _is_local(request: Request) -> bool:
+    return request.client is not None and request.client.host in LOCAL_HOSTS
+
+
 @app.middleware("http")
-async def track_activity_and_revalidate_ui(request, call_next):
+async def track_activity_and_revalidate_ui(request: Request, call_next):
     _mark_activity()
+    local = _is_local(request)
+    url_key = request.query_params.get("key")
+    if not local:
+        # Telefon: açar QR koddakı linklə gəlir (?key=...), sonra cookie-də saxlanılır.
+        given = url_key or request.cookies.get(ACCESS_COOKIE) or ""
+        if not secrets.compare_digest(given.encode(), ACCESS_KEY.encode()):
+            return PlainTextResponse(NO_ACCESS_MESSAGE, status_code=403)
+        _mark_phone_activity()
     response = await call_next(request)
+    if not local and url_key:
+        response.set_cookie(ACCESS_COOKIE, ACCESS_KEY, max_age=ACCESS_COOKIE_SECONDS, httponly=True, samesite="lax")
     # Kod yenilənəndə brauzer köhnə HTML/JS/CSS-i keşdən götürməsin.
     if request.url.path == "/" or request.url.path.startswith("/static/"):
         response.headers["Cache-Control"] = "no-cache"
     return response
+
+
+def _lan_ip() -> str | None:
+    """Kompüterin Wi-Fi/ev şəbəkəsindəki ünvanı (məs. 192.168.1.5)."""
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+        try:
+            # UDP "connect" paket göndərmir, yalnız hansı şəbəkə kartının istifadə olunacağını müəyyən edir.
+            sock.connect(("192.0.2.1", 80))
+            return sock.getsockname()[0]
+        except OSError:
+            return None
 
 
 def _ydl_error(exc: Exception) -> HTTPException:
@@ -285,6 +350,19 @@ def search(q: str):
         raise _ydl_error(exc) from exc
 
     return {"type": "link" if link else "search", "results": results}
+
+
+@app.get("/api/phone-link")
+def phone_link(request: Request):
+    """Telefonda açmaq üçün link və QR kod. Yalnız kompüterin özündən soruşmaq olar (açar içindədir)."""
+    if not _is_local(request):
+        raise HTTPException(403, "Bu link yalnız kompüterdə göstərilir.")
+    ip = _lan_ip()
+    if not ip or ip.startswith("127."):
+        raise HTTPException(503, "Kompüter Wi-Fi və ya ev şəbəkəsinə qoşulmayıb.")
+    url = f"http://{ip}:{request.url.port}/?key={ACCESS_KEY}"
+    qr = qrcode.make(url, image_factory=qrcode.image.svg.SvgPathImage, box_size=10, border=2)
+    return {"url": url, "svg": qr.to_string(encoding="unicode")}
 
 
 @app.get("/api/history")

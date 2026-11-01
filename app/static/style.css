@@ -43,7 +43,72 @@ a {
 .topbar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   padding: 14px 24px;
+}
+
+#phone-btn {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* "Telefonda aç" pəncərəsi */
+#phone-dialog {
+  width: min(420px, calc(100vw - 32px));
+  padding: 22px;
+  color: var(--text);
+  background: var(--glass-strong);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+#phone-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+#phone-dialog h2 {
+  margin: 0 0 14px;
+  font-size: 20px;
+}
+
+#phone-dialog .qr {
+  width: 220px;
+  margin: 0 auto 14px;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 12px;
+}
+
+#phone-dialog .qr svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#phone-dialog ol {
+  margin: 0 0 10px;
+  padding-left: 20px;
+}
+
+#phone-dialog .note {
+  margin: 6px 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+#phone-dialog .phone-url {
+  margin: 10px 0 14px;
+  font-size: 12px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+#phone-close {
+  width: 100%;
 }
 
 .logo {

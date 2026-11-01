@@ -14,9 +14,15 @@ const player = document.getElementById("player");
 const audio = document.getElementById("audio");
 const nowPlaying = document.getElementById("now-playing");
 const nowCover = document.getElementById("now-cover");
+const phoneBtn = document.getElementById("phone-btn");
+const phoneDialog = document.getElementById("phone-dialog");
 
 const RECORD_SECONDS = 10;
 const SKELETON_CARDS = 8;
+// Səhifə kompüterin özündə açılıb, yoxsa telefonda (ev Wi-Fi-ı ilə)?
+const IS_PC = ["localhost", "127.0.0.1"].includes(location.hostname);
+// Brauzer mikrofonu yalnız təhlükəsiz bağlantıda verir: localhost bəli, telefonun http://192.168... linki yox.
+const MIC_AVAILABLE = window.isSecureContext && !!navigator.mediaDevices;
 
 function setStatus(text, isError = false) {
   statusEl.textContent = text;
@@ -76,12 +82,17 @@ async function withBusy(btn, fn) {
 // F5: tətbiqin içində dinləmək
 function playTrack(track, btn) {
   return withBusy(btn, async () => {
-    const info = await api(`/api/prepare/${track.id}`, { method: "POST" });
-    nowPlaying.textContent = info.title || track.title;
+    // iPhone play()-i yalnız birbaşa klikdə icazə verir, ona görə MP3 hazırlanmasını gözləmədən başlayırıq:
+    // /api/audio özü MP3 hazır olana qədər gözləyir, /api/prepare isə mahnını tarixçəyə yazır.
+    nowPlaying.textContent = track.title;
     nowCover.src = track.thumbnail;
     player.hidden = false;
     audio.src = `/api/audio/${track.id}`;
-    await audio.play();
+    const playing = audio.play();
+    playing.catch(() => {}); // xətanı aşağıdakı await göstərir
+    const info = await api(`/api/prepare/${track.id}`, { method: "POST" });
+    nowPlaying.textContent = info.title || track.title;
+    await playing;
     afterListen();
   });
 }
@@ -333,6 +344,13 @@ async function recognizeFromStream(stream) {
 }
 
 async function recordAndRecognize() {
+  if (!MIC_AVAILABLE) {
+    setStatus(
+      "Telefonda səslə axtarış işləmir: brauzer mikrofonu yalnız təhlükəsiz (HTTPS) bağlantıda verir. Bunun üçün kompüterdəki ilkmusic-dən istifadə et.",
+      true,
+    );
+    return;
+  }
   let stream;
   try {
     stream = await navigator.mediaDevices.getUserMedia(MIC_CONSTRAINTS);
@@ -356,6 +374,21 @@ async function recordAndRecognize() {
 }
 
 micBtn.addEventListener("click", recordAndRecognize);
+if (!MIC_AVAILABLE) micBtn.title = "Səslə axtarış yalnız kompüterdə işləyir";
+
+// "Telefonda aç": QR kod (yalnız kompüterdə, çünki linkdə gizli açar var)
+phoneBtn.hidden = !IS_PC;
+phoneBtn.addEventListener("click", async () => {
+  try {
+    const data = await api("/api/phone-link");
+    document.getElementById("phone-qr").innerHTML = data.svg; // öz serverimizin yaratdığı SVG
+    document.getElementById("phone-url").textContent = data.url;
+    phoneDialog.showModal();
+  } catch (err) {
+    setStatus(err.message, true);
+  }
+});
+document.getElementById("phone-close").addEventListener("click", () => phoneDialog.close());
 
 // Tətbiq pəncərəsiz işləyir: səhifə açıq olduqca serverə xəbər veririk, bağlananda server özü dayanır.
 const HEARTBEAT_MS = 20000;

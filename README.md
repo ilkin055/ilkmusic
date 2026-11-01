@@ -12,6 +12,19 @@
 
 Heç nə quraşdırmaq lazım deyil: Python və FFmpeg paketin içindədir. Ətraflı təlimat ZIP-in içindəki `OXU.txt` faylındadır.
 
+## Telefonda istifadə (iPhone və Android, ev Wi-Fi-ı ilə)
+
+1. Kompüterdə ilkmusic-i aç və yuxarı sağdakı **"📱 Telefonda aç"** düyməsinə bas.
+2. Telefonun kamerası ilə QR kodu skan et, link Safari-də (və ya Chrome-da) açılacaq.
+3. iPhone-da **Paylaş → "Ana ekrana əlavə et"**: telefonda ilkmusic ikonu yaranır.
+
+Mahnı axtarmaq, dinləmək və MP3 yükləmək olur, yüklənən mahnılar iPhone-un "Fayllar" bölməsinə düşür.
+
+- Telefon kompüterlə **eyni Wi-Fi**-da olmalıdır, kompüterdə ilkmusic açıq qalmalıdır.
+- İlk dəfə Windows Firewall Python-un şəbəkəyə çıxışı üçün icazə soruşacaq: **"Özəl şəbəkələr"** seçili olsun və **"Girişə icazə ver"** bas. Windows-da ev Wi-Fi-ı "Özəl" (Private) şəbəkə kimi qeyd olunmalıdır.
+- Səslə axtarış telefonda işləmir: brauzer mikrofonu yalnız təhlükəsiz (HTTPS) bağlantıda verir.
+- QR koddakı link gizli açar daşıyır, onsuz Wi-Fi-dakı başqası tətbiqə girə bilmir. Açarı dəyişmək üçün `%LOCALAPPDATA%\ilkmusic\access-key.txt` faylını sil və ilkmusic-i yenidən başlat: köhnə linklər işləməyəcək.
+
 ## İnkişaf: işə salmaq
 
 Masaüstündəki **ilkmusic** ikonuna iki dəfə bas. Tətbiq ayrıca pəncərədə, adi proqram kimi açılır (Chrome və ya Edge-in "app" rejimi: ünvan sətri və tablar olmadan). Chrome da, Edge də yoxdursa, adi brauzer tabında açılır.

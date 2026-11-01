@@ -3,3 +3,4 @@ uvicorn[standard]==0.54.0
 yt-dlp==2026.10.21
 shazamio==0.8.1
 python-multipart==0.0.32
+qrcode==8.2

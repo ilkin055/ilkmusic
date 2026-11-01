@@ -19,6 +19,13 @@ masaüstündəki ikon özü yeni yerə yönələcək.
 BAĞLAMAQ
 ilkmusic pəncərəsini bağla. Proqram 3 dəqiqə ərzində özü dayanır.
 
+TELEFONDA (iPhone, Android)
+Kompüterdə ilkmusic açıq olsun, yuxarı sağdakı "Telefonda aç" düyməsinə bas.
+Telefonun kamerası ilə QR kodu skan et. Telefon kompüterlə eyni Wi-Fi-da olmalıdır.
+iPhone-da Safari-də Paylaş → "Ana ekrana əlavə et" desən, ilkmusic ikonu telefonda görünər.
+İlk dəfə Windows Firewall icazə soruşacaq: "Özəl şəbəkələr" seçili olsun, "Girişə icazə ver" bas.
+Telefonda səslə axtarış işləmir.
+
 SƏSLƏ AXTARIŞ
 "Səslə axtar" düyməsini bas. Brauzer mikrofon icazəsi istəyəndə "İcazə ver" de.
 Mahnını telefondan çal və mikrofona yaxın tut, 10 saniyə gözlə.

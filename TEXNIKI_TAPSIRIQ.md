@@ -87,7 +87,18 @@ Mahnıların mənbəyi: **YouTube**.
     - Səslə tanıma: Apple-ın rəsmi ShazamKit-i.
     - Ana səhifə (son dinlənilənlər, oxşar mahnılar) və Zaqatala dizaynı.
     - MP3 yükləmə yoxdur.
-  - **Açıq suallar:** Mac var? Apple Developer hesabı var? Funksiyalar: qaydalara uyğun versiya, yoxsa App Store-suz versiya?
+  - **İstifadəçinin istəyi (2026-11-01):** tətbiqin içində öz "Yükləmələr" bölməsi olsun. Mahnı tətbiqin içinə yüklənsin və internetsiz dinlənsin.
+    - Bu, App Store qaydası 5.2.3 ilə ziddiyyət təşkil edir: tətbiqin içində saxlamaq da "save/download" sayılır, App Store qəbul etməz.
+    - Mümkün yollar:
+      - A) App Store versiyası, yükləmə olmadan.
+      - B) Yükləməli versiya yalnız öz iPhone-una Xcode ilə: Mac lazımdır, pulsuz hesabla 7 gündən bir yenilənir.
+      - C) Kompüterdəki ilkmusic-i ev Wi-Fi-ı ilə iPhone-un Safari-sindən açmaq: Mac lazım deyil, MP3 iPhone-un "Fayllar" bölməsinə yüklənir. Səslə axtarış HTTPS olmadığı üçün işləməz, kompüter açıq olmalıdır.
+  - **Seçildi: C (2026-11-01), hazırdır.**
+    - Kompüterdəki ilkmusic-də "📱 Telefonda aç" düyməsi QR kod göstərir.
+    - Telefon ev Wi-Fi-ı ilə qoşulur, giriş gizli açarla qorunur.
+    - iPhone ana ekran ikonu var.
+    - Səslə axtarış telefonda işləmir (HTTPS yoxdur).
+  - **Açıq suallar (A/B üçün, sonra):** Mac var? Apple Developer hesabı var?
 
 ## 5. İcra planı (Mərhələ 1)
 
@@ -126,3 +137,6 @@ Yoxdur.
 - 2026-10-25: "Zaqatala" yazısı iki tərəfdən götürüldü, axtarışın üstündə bir dənə böyük yazı oldu.
 - 2026-11-01: GitHub-a dərc edildi: public repo `ilkin055/ilkmusic` və Release v1.0 (`ilkmusic.zip`).
 - 2026-11-01: Tətbiq ayrıca app pəncərəsində açılır (Chrome/Edge `--app`), pəncərə ikonu ilkmusic ikonudur.
+- 2026-11-01: Telefondan giriş (Mərhələ 3, yol C).
+  - Server ev şəbəkəsində dinləyir, şəbəkədən gələn sorğular gizli açarla (QR kod) yoxlanılır.
+  - iPhone üçün dinləmə düzəlişi edildi, ana ekran ikonu əlavə olundu.
