@@ -14,10 +14,10 @@ Heç nə quraşdırmaq lazım deyil: Python və FFmpeg paketin içindədir. Ətr
 
 ## İnkişaf: işə salmaq
 
-Masaüstündəki **ilkmusic** ikonuna iki dəfə bas. Tətbiq brauzerdə açılır (<http://localhost:8000>), heç bir pəncərə görünmür.
+Masaüstündəki **ilkmusic** ikonuna iki dəfə bas. Tətbiq ayrıca pəncərədə, adi proqram kimi açılır (Chrome və ya Edge-in "app" rejimi: ünvan sətri və tablar olmadan). Chrome da, Edge də yoxdursa, adi brauzer tabında açılır.
 
-- **Bağlamaq:** brauzerdə tətbiq səhifəsini bağla. Server 3 dəqiqə ərzində özü dayanır.
-- Tətbiq artıq işləyirkən ikona yenidən bassan, sadəcə yeni brauzer tabı açılır.
+- **Bağlamaq:** ilkmusic pəncərəsini bağla. Server 3 dəqiqə ərzində özü dayanır.
+- Tətbiq artıq işləyirkən ikona yenidən bassan, yeni pəncərə açılır, ikinci server başlamır.
 - `start.bat` da eyni işi görür, amma serverin loglarını qara pəncərədə göstərir. Problem axtaranda faydalıdır.
 - İkonla işə salananda loglar `%TEMP%\ilkmusic.log` faylına yazılır.
 - 8000 portu başqa proqramla məşğuldursa, tətbiq özü 8001–8010 arasında boş port seçir.

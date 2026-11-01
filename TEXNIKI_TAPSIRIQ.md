@@ -76,7 +76,18 @@ Mahnıların mənbəyi: **YouTube**.
     - **Seçildi: Variant A (fayl).** Qarşı tərəflər həm kompüter, həm telefon istifadə edir. Telefon üçün həll sonra ayrıca baxılacaq.
     - **Hazırdır:** `dist\ilkmusic.zip` (~130 MB), `packaging\build.py` ilə yığılır. Explorer-dən təmiz qovluqda sınanıb: paketin öz Python-u və FFmpeg-i işləyir, port məşğuldursa 8001–8010 seçilir.
   - **F7, F8:** ana səhifə və Zaqatala dizaynı (bax: bölmə 2).
-- **Mərhələ 3 (sonra):** telefonda, iOS-da açmaq.
+- **Mərhələ 3: iOS, App Store.** İstifadəçi tətbiqi App Store-a çıxarmaq istəyir.
+  - **Məhdudiyyətlər:**
+    - App Store qaydası 5.2.3: YouTube kimi mənbələrdən icazəsiz yükləmə, çevirmə və saxlama qadağandır. MP3 yükləmə və YouTube-dan səsin çıxarılması App Store versiyasında ola bilməz.
+    - iPhone Python serverini işlədə bilmir, tətbiq Swift (SwiftUI) ilə yenidən yazılmalıdır.
+    - Lazımdır: Xcode üçün Mac (və ya bulud Mac xidməti) və Apple Developer Program (ildə 99 $).
+  - **Təklif olunan App Store versiyası:**
+    - Axtarış: YouTube Data API (rəsmi, API açarı ilə).
+    - Dinləmə: YouTube-un rəsmi oynadıcısı tətbiqin içində.
+    - Səslə tanıma: Apple-ın rəsmi ShazamKit-i.
+    - Ana səhifə (son dinlənilənlər, oxşar mahnılar) və Zaqatala dizaynı.
+    - MP3 yükləmə yoxdur.
+  - **Açıq suallar:** Mac var? Apple Developer hesabı var? Funksiyalar: qaydalara uyğun versiya, yoxsa App Store-suz versiya?
 
 ## 5. İcra planı (Mərhələ 1)
 
@@ -114,3 +125,4 @@ Yoxdur.
   - Paket yenidən yığıldı.
 - 2026-10-25: "Zaqatala" yazısı iki tərəfdən götürüldü, axtarışın üstündə bir dənə böyük yazı oldu.
 - 2026-11-01: GitHub-a dərc edildi: public repo `ilkin055/ilkmusic` və Release v1.0 (`ilkmusic.zip`).
+- 2026-11-01: Tətbiq ayrıca app pəncərəsində açılır (Chrome/Edge `--app`), pəncərə ikonu ilkmusic ikonudur.

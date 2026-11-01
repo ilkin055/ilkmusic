@@ -1,21 +1,55 @@
-"""Tətbiqi işə salır və brauzerdə açır.
+"""Tətbiqi işə salır və ayrıca app pəncərəsində açır.
 
 Masaüstü qısayolu və portativ paketin ilkmusic.exe-si bunu pythonw.exe ilə (konsol pəncərəsi olmadan) işə salır.
-Brauzerdə tətbiq səhifəsi qalmayanda server özü dayanır.
+Pəncərə Chrome/Edge-in "app" rejimində açılır: ünvan sətri və tablar olmadan, adi proqram kimi.
+Pəncərə bağlananda server özü dayanır.
 """
 
 import json
+import os
 import socket
+import subprocess
 import sys
 import tempfile
 import threading
 import urllib.request
 import webbrowser
+import winreg
 from pathlib import Path
 
 HOST = "127.0.0.1"
 PORTS = range(8000, 8011)
 LOG_PATH = Path(tempfile.gettempdir()) / "ilkmusic.log"
+APP_WINDOW_SIZE = "1280,860"
+APP_BROWSERS = ("chrome.exe", "msedge.exe")  # Edge Windows 10/11-də həmişə var
+
+
+def _app_browser() -> str | None:
+    """Chrome və ya Edge-in yolu: Windows-un "App Paths" qeydindən, tapılmasa standart yerlərdən."""
+    for exe in APP_BROWSERS:
+        for hive in (winreg.HKEY_CURRENT_USER, winreg.HKEY_LOCAL_MACHINE):
+            try:
+                with winreg.OpenKey(hive, rf"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\{exe}") as key:
+                    path = winreg.QueryValue(key, None).strip('"')
+            except OSError:
+                continue
+            if path and os.path.exists(path):
+                return path
+    program_dirs = [os.environ.get(v, "") for v in ("ProgramFiles", "ProgramFiles(x86)", "LOCALAPPDATA")]
+    candidates = [
+        os.path.join(base, *parts)
+        for base in program_dirs
+        for parts in (("Google", "Chrome", "Application", "chrome.exe"), ("Microsoft", "Edge", "Application", "msedge.exe"))
+    ]
+    return next((p for p in candidates if os.path.exists(p)), None)
+
+
+def _open_app_window(url: str) -> None:
+    browser = _app_browser()
+    if browser:
+        subprocess.Popen([browser, f"--app={url}", f"--window-size={APP_WINDOW_SIZE}"])
+    else:
+        webbrowser.open(url)  # Chrome/Edge yoxdursa, adi brauzer tabında
 
 
 def _port_state(port: int) -> str:
@@ -42,8 +76,8 @@ def run() -> None:
     for port in PORTS:
         state = _port_state(port)
         if state == "ilkmusic":
-            print(f"Tətbiq artıq işləyir, brauzerdə açılır: http://localhost:{port}")
-            webbrowser.open(f"http://localhost:{port}")
+            print(f"Tətbiq artıq işləyir, pəncərəsi açılır: http://localhost:{port}")
+            _open_app_window(f"http://localhost:{port}")
             return
         if state == "free":
             break
@@ -60,7 +94,7 @@ def run() -> None:
     url = f"http://localhost:{port}"
     server = uvicorn.Server(uvicorn.Config(app_module.app, host=HOST, port=port))
     app_module.shutdown_hook = lambda: setattr(server, "should_exit", True)
-    threading.Timer(1.5, webbrowser.open, args=[url]).start()
+    threading.Timer(1.5, _open_app_window, args=[url]).start()
     server.run()
 
 

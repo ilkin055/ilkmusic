@@ -8,7 +8,7 @@ AÇMAQ
    ilkmusic.exe-ni qovluqdan ayırma: o, yanındakı fayllar olmadan işləmir.
 3. Qovluğun içindəki ilkmusic.exe faylına iki dəfə bas.
    İlk dəfə masaüstündə ikon yaratmağı soruşacaq: "Bəli" (Yes) de.
-   Sonra proqramı masaüstündəki ikondan açarsan. Tətbiq brauzerdə açılır.
+   Sonra proqramı masaüstündəki ikondan açarsan. Tətbiq ayrıca pəncərədə açılır.
 4. İlk dəfə Windows "Windows protected your PC" yaza bilər.
    "More info" (Ətraflı) → "Run anyway" (Hər halda işə sal) bas.
    Bu xəbərdarlıq ona görədir ki, proqram imzalanmayıb.
@@ -17,7 +17,7 @@ Qovluğu sonra başqa yerə köçürsən, oradan ilkmusic.exe-ni bir dəfə aç:
 masaüstündəki ikon özü yeni yerə yönələcək.
 
 BAĞLAMAQ
-Brauzerdə tətbiq səhifəsini bağla. Proqram 3 dəqiqə ərzində özü dayanır.
+ilkmusic pəncərəsini bağla. Proqram 3 dəqiqə ərzində özü dayanır.
 
 SƏSLƏ AXTARIŞ
 "Səslə axtar" düyməsini bas. Brauzer mikrofon icazəsi istəyəndə "İcazə ver" de.
