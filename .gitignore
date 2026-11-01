@@ -1,0 +1,11 @@
+# Yığılmış paket GitHub Release-ə yüklənir, repoya yox (ZIP 100 MB limitindən böyükdür)
+dist/
+
+# Python
+__pycache__/
+*.pyc
+
+# Şəxsi inkişaf ayarları (kompüterə xas yollar)
+.claude/
+
+*.log

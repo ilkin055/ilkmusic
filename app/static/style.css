@@ -1,0 +1,424 @@
+/* Arxa fonda Zaqatala şəkli olduğu üçün tema həmişə tünddür: mətn şəklin üstündə oxunaqlı qalsın. */
+:root {
+  --text: #f4f5f7;
+  --muted: #b9bec7;
+  --glass: rgba(16, 19, 26, 0.58);
+  --glass-strong: rgba(12, 14, 20, 0.82);
+  --glass-hover: rgba(34, 38, 48, 0.72);
+  --border: rgba(255, 255, 255, 0.14);
+  --accent: #ff4d4f;
+  --accent-text: #ffffff;
+  --gold: #ffd27a;
+  --error: #ff8a8a;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #0c0e13;
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  line-height: 1.4;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  /* Yuxarıda şəkil açıq qalır (dağlar və şəhər görünsün), aşağıda kartlar oxunaqlı olsun deyə qaralır. */
+  background:
+    linear-gradient(180deg, rgba(8, 10, 14, 0.15) 0%, rgba(8, 10, 14, 0.3) 40%, rgba(8, 10, 14, 0.8) 75%, rgba(8, 10, 14, 0.92) 100%),
+    url("/static/bg-zaqatala.jpg") center 40% / cover no-repeat;
+}
+
+a {
+  color: inherit;
+}
+
+/* Üst panel */
+.topbar {
+  display: flex;
+  align-items: center;
+  padding: 14px 24px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-decoration: none;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px 150px;
+}
+
+/* Axtarışın üstündə böyük "Zaqatala" */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-items: center;
+  padding: 12vh 0 20vh; /* axtarışın altında Zaqatalanın mənzərəsi görünsün */
+}
+
+.zaqatala {
+  font-size: clamp(60px, 11vw, 150px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 3px;
+  background: linear-gradient(180deg, #fff6df 10%, var(--gold) 55%, #e0962f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.6));
+  user-select: none;
+}
+
+#search-form {
+  display: flex;
+  width: min(680px, 100%);
+  gap: 8px;
+  padding: 8px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+#q {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 10px 16px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+#q::placeholder {
+  color: var(--muted);
+}
+
+button {
+  padding: 9px 16px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+button.primary {
+  color: var(--accent-text);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+button.primary:hover:not(:disabled) {
+  background: #ff6668;
+}
+
+.link-btn {
+  padding: 4px 8px;
+  font-size: 14px;
+  color: var(--muted);
+  background: none;
+  border: none;
+}
+
+.link-btn:hover:not(:disabled) {
+  color: var(--text);
+  background: none;
+}
+
+#status {
+  min-height: 1.4em;
+  margin: 0 0 18px;
+  text-align: center;
+  color: var(--muted);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+#status.error {
+  color: var(--error);
+}
+
+/* Rəflər: "Son dinlədiklərin", "Sənə oxşar mahnılar", axtarış nəticələri */
+.shelf {
+  margin-bottom: 26px;
+  padding: 18px 18px 20px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.shelf[hidden],
+#home-view[hidden] {
+  display: none;
+}
+
+.shelf-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.shelf-head h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 18px 14px;
+}
+
+.empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Kart (YouTube kimi) */
+.card {
+  min-width: 0;
+  border-radius: 12px;
+}
+
+.thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  border-radius: 12px;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+}
+
+.thumb:hover img {
+  transform: scale(1.05);
+}
+
+.thumb .duration {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  padding: 1px 6px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.78);
+  border-radius: 4px;
+}
+
+.thumb .play-icon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 34px;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.thumb:hover .play-icon,
+.card.busy .play-icon {
+  opacity: 1;
+}
+
+.card.busy .play-icon {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.card-body {
+  padding: 8px 2px 0;
+}
+
+.card .title {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow-wrap: anywhere;
+}
+
+.card .meta {
+  margin-top: 3px;
+  overflow: hidden;
+  font-size: 13px;
+  color: var(--muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.card-actions button {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+/* Yüklənmə zamanı boz kart şablonları */
+.skeleton .thumb,
+.skeleton .line {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.05));
+  background-size: 200% 100%;
+  animation: shimmer 1.3s linear infinite;
+}
+
+.skeleton .line {
+  height: 12px;
+  margin-top: 10px;
+  border-radius: 6px;
+}
+
+.skeleton .line.short {
+  width: 60%;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.credit {
+  margin: 30px 0 0;
+  font-size: 12px;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* Aşağıdakı pleyer */
+#player {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  background: var(--glass-strong);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+#player[hidden] {
+  display: none;
+}
+
+#now-cover {
+  width: 72px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+#now-playing {
+  flex: 0 1 320px;
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#audio {
+  flex: 1 1 360px;
+  max-width: 520px;
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding-top: 8vh;
+  }
+
+  .topbar {
+    padding: 12px 16px;
+  }
+
+  main {
+    padding: 0 16px 170px;
+  }
+
+  #search-form {
+    flex-wrap: wrap;
+    border-radius: 18px;
+  }
+
+  #q {
+    flex-basis: 100%;
+  }
+
+  #search-form button {
+    flex: 1;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 10px;
+  }
+
+  #now-cover {
+    display: none;
+  }
+}

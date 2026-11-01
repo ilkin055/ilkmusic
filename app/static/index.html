@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ilkmusic</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a href="#" id="home-link" class="logo">ilk<span>music</span></a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="zaqatala" aria-hidden="true">Zaqatala</div>
+      <form id="search-form">
+        <input id="q" type="text" placeholder="Mahnının adı və ya YouTube linki" autocomplete="off" autofocus>
+        <button type="submit" class="primary">Axtar</button>
+        <button type="button" id="mic" title="Mahnını mikrofona səsləndir, tətbiq onu tanısın">🎤 Səslə axtar</button>
+      </form>
+    </section>
+
+    <p id="status" role="status"></p>
+
+    <section id="home-view">
+      <div class="shelf" id="recent-shelf" hidden>
+        <div class="shelf-head">
+          <h2>Son dinlədiklərin</h2>
+          <button type="button" id="clear-history" class="link-btn">Tarixçəni təmizlə</button>
+        </div>
+        <div class="grid" id="recent"></div>
+      </div>
+      <div class="shelf">
+        <div class="shelf-head">
+          <h2 id="similar-title">Sənə oxşar mahnılar</h2>
+        </div>
+        <div class="grid" id="similar"></div>
+      </div>
+    </section>
+
+    <section id="search-view" class="shelf" hidden>
+      <div class="shelf-head">
+        <h2 id="search-title">Axtarış nəticələri</h2>
+        <button type="button" id="back-home" class="link-btn">← Ana səhifə</button>
+      </div>
+      <div class="grid" id="results"></div>
+    </section>
+
+    <p class="credit">
+      Fon: Zaqatala, foto
+      <a href="https://commons.wikimedia.org/wiki/File:Zaqatala_Umumi_Gorunus_-_panoramio.jpg" target="_blank" rel="noopener">NorthernCaucasusStud…</a>,
+      <a href="https://creativecommons.org/licenses/by/3.0" target="_blank" rel="noopener">CC BY 3.0</a>
+    </p>
+  </main>
+
+  <footer id="player" hidden>
+    <img id="now-cover" alt="">
+    <div id="now-playing"></div>
+    <audio id="audio" controls></audio>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+ilkmusic — mahnını adı, YouTube linki və ya səsi ilə tap, dinlə, MP3 yüklə
+
+AÇMAQ
+1. ZIP faylını tam çıxart: ZIP-ə sağ klik → "Hamısını çıxart" (Extract All).
+   ZIP-in içində birbaşa açsan, işləməyəcək.
+2. Bütün ilkmusic qovluğunu daimi yerə qoy, məsələn Sənədlər.
+   "Yükləmələr"-də qalsa, oranı təmizləyəndə proqram da silinər.
+   ilkmusic.exe-ni qovluqdan ayırma: o, yanındakı fayllar olmadan işləmir.
+3. Qovluğun içindəki ilkmusic.exe faylına iki dəfə bas.
+   İlk dəfə masaüstündə ikon yaratmağı soruşacaq: "Bəli" (Yes) de.
+   Sonra proqramı masaüstündəki ikondan açarsan. Tətbiq brauzerdə açılır.
+4. İlk dəfə Windows "Windows protected your PC" yaza bilər.
+   "More info" (Ətraflı) → "Run anyway" (Hər halda işə sal) bas.
+   Bu xəbərdarlıq ona görədir ki, proqram imzalanmayıb.
+
+Qovluğu sonra başqa yerə köçürsən, oradan ilkmusic.exe-ni bir dəfə aç:
+masaüstündəki ikon özü yeni yerə yönələcək.
+
+BAĞLAMAQ
+Brauzerdə tətbiq səhifəsini bağla. Proqram 3 dəqiqə ərzində özü dayanır.
+
+SƏSLƏ AXTARIŞ
+"Səslə axtar" düyməsini bas. Brauzer mikrofon icazəsi istəyəndə "İcazə ver" de.
+Mahnını telefondan çal və mikrofona yaxın tut, 10 saniyə gözlə.
+Ekranda "Səs: ▮▮▮" göstəricisi dolmalıdır. Boş qalırsa, mikrofon mahnını eşitmir.
+
+YENİ VERSİYA
+Axtarış və ya yükləmə işləməyi dayandırsa (YouTube dəyişə bilir), yeni versiyanı buradan yüklə:
+https://github.com/ilkin055/ilkmusic/releases
+
+QURAŞDIRMA LAZIM DEYİL
+Python və FFmpeg bu qovluğun içindədir. Silmək üçün qovluğu silmək kifayətdir.
+Windows 10 və ya 11 lazımdır.
+
+QEYD
+Yalnız şəxsi istifadə üçündür. YouTube-un qaydaları yükləməni qadağan edir,
+mahnılar isə müəllif hüququ ilə qorunur.
+FFmpeg GPL lisenziyası ilə yayılır: ffmpeg\LICENSE.txt.
